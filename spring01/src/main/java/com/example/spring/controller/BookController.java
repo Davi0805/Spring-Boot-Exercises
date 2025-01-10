@@ -30,14 +30,32 @@ public class BookController {
         return ResponseEntity.ok(books);
     }
 
-    @RequestMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Book> getById(@PathVariable Long id)
     {
         Book data = cursor.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Book nao encontrado!"));
+        .orElseThrow(() -> new ResourceNotFoundException("Book " + id +" nao encontrado!"));
 
         return ResponseEntity.ok(data);
     }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Book> getByName(@PathVariable String name)
+    {
+        Book data = cursor.findByName(name);
+        if (data == null)
+            throw new ResourceNotFoundException("Book " + name +" nao encontrado!");
+        return ResponseEntity.ok(data);
+    }
+
+    /* @GetMapping("/author/{author}")
+    public ResponseEntity<List<Book>> getByAuthorName(@PathVariable String authorname)
+    {
+        List<Book> data = cursor.findByAuthorName(authorname);
+        if (data.isEmpty())
+            throw new ResourceNotFoundException("Nenhum book de " + authorname + " encotrado!");
+        return ResponseEntity.ok(data);
+    } */
 
     @PostMapping
     public Book createBook(Book req)

@@ -3,6 +3,7 @@ package com.example.spring.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,9 @@ public class AuthorController {
         List<Author> data = cursor.findAll();
         if (data.isEmpty())
             throw new ResourceNotFoundException("Author nao encontrado!");
-        return ResponseEntity.ok(data);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(data);
     }
 
     @GetMapping
@@ -38,14 +41,16 @@ public class AuthorController {
         Author data = cursor.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Author nao encontrado!"));
 
-        return ResponseEntity.ok(data);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(data);
     }
 
     @PostMapping
     public Author createAuthor(Author author)
     {
         return cursor.save(author);
-    }
+    } // Modificar para created
 
     @PutMapping("/{id}")
     public ResponseEntity<Author> updateAuthor(@PathVariable Long id, Author author) {
@@ -54,7 +59,9 @@ public class AuthorController {
         data.setName(author.getName());
         data.setBooks(author.getBooks());
         cursor.save(data);
-        return ResponseEntity.ok(data);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(data);
     }
 
     @DeleteMapping("/{id}")
@@ -63,7 +70,9 @@ public class AuthorController {
         if (cursor.existsById(id))
         {
             cursor.deleteById(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .build();
         }
         throw new ResourceNotFoundException("Author nao encontrado!");
     }

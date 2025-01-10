@@ -3,6 +3,7 @@ package com.example.spring.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,9 @@ public class BookController {
         List<Book> books = cursor.findAll();
         if (books.isEmpty())
             throw new ResourceNotFoundException("Book nao encontrado!");
-        return ResponseEntity.ok(books);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(books);
     }
 
     @GetMapping("/{id}")
@@ -36,7 +39,9 @@ public class BookController {
         Book data = cursor.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Book " + id +" nao encontrado!"));
 
-        return ResponseEntity.ok(data);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(data);
     }
 
     @GetMapping("/name/{name}")
@@ -45,7 +50,9 @@ public class BookController {
         Book data = cursor.findByName(name);
         if (data == null)
             throw new ResourceNotFoundException("Book " + name +" nao encontrado!");
-        return ResponseEntity.ok(data);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(data);
     }
 
     /* @GetMapping("/author/{author}")
@@ -73,7 +80,9 @@ public class BookController {
         data.setAuthor(req.getAuthor());
         data.setRelease_date(req.getRelease_date());
         cursor.save(data);
-        return ResponseEntity.ok(data);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(data);
     }
 
     @DeleteMapping("/{id}")

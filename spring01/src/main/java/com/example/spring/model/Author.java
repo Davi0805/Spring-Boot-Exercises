@@ -25,4 +25,19 @@ public class Author {
     
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Book> books;
+
+    public Author()
+    {
+
+    }
+
+    public Author(String s) {
+        this.name = s;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "{ name: \"" + name + "\", books: \"" + books + "\"}";
+    }
 }

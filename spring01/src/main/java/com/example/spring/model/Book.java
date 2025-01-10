@@ -30,4 +30,13 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
+
+    public Book()
+    {
+
+    }
+
+    public Book(String s) {
+        this.name = s;
+    }
 }

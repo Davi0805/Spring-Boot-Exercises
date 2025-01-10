@@ -1,6 +1,5 @@
 SPRING 01
 Exercise: Create a REST API for managing a library system with the following features:
-Features
 
     CRUD Operations:
         Manage books (similar to your first exercise but now with additional relationships).

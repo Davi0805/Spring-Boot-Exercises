@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.model.Author;
 import com.example.spring.repository.AuthorRepository;
 
@@ -26,7 +27,7 @@ public class AuthorController {
     {
         List<Author> data = cursor.findAll();
         if (data.isEmpty())
-            return ResponseEntity.noContent().build();
+            throw new ResourceNotFoundException("Author nao encontrado!");
         return ResponseEntity.ok(data);
     }
 
@@ -34,9 +35,9 @@ public class AuthorController {
     @RequestMapping("/{id}")
     public ResponseEntity<Author> getAuthorById(@PathVariable Long id)
     {
-        Author data = cursor.findById(id).orElse(null);
-        if (data == null)
-            return ResponseEntity.notFound().build();
+        Author data = cursor.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Author nao encontrado!"));
+
         return ResponseEntity.ok(data);
     }
 
@@ -48,14 +49,12 @@ public class AuthorController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Author> updateAuthor(@PathVariable Long id, Author author) {
-        Author data = cursor.findById(id).orElse(null);
-        if (data != null) {
-            data.setName(author.getName());
-            data.setBooks(author.getBooks());
-            cursor.save(data);
-            return ResponseEntity.ok(data);
-        }
-        return ResponseEntity.notFound().build();
+        Author data = cursor.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Author nao encontrado!"));
+        data.setName(author.getName());
+        data.setBooks(author.getBooks());
+        cursor.save(data);
+        return ResponseEntity.ok(data);
     }
 
     @DeleteMapping("/{id}")
@@ -66,6 +65,6 @@ public class AuthorController {
             cursor.deleteById(id);
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.notFound().build();
+        throw new ResourceNotFoundException("Author nao encontrado!");
     }
 }

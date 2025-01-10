@@ -1,7 +1,6 @@
 package com.example.spring.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.model.Book;
 import com.example.spring.repository.BookRepository;
 
@@ -26,16 +26,16 @@ public class BookController {
     public ResponseEntity<List<Book>> getAllBooks() {
         List<Book> books = cursor.findAll();
         if (books.isEmpty())
-            return ResponseEntity.noContent().build();
+            throw new ResourceNotFoundException("Book nao encontrado!");
         return ResponseEntity.ok(books);
     }
 
     @RequestMapping("/{id}")
     public ResponseEntity<Book> getById(@PathVariable Long id)
     {
-        Book data = cursor.findById(id).orElse(null);
-        if (data == null)
-            return ResponseEntity.notFound().build();
+        Book data = cursor.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Book nao encontrado!"));
+
         return ResponseEntity.ok(data);
     }
 
@@ -48,16 +48,13 @@ public class BookController {
     @PutMapping("/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable Long id , Book req)
     {
-        Optional<Book> data = cursor.findById(id);
-        if (data.isPresent())
-        {
-            Book book = data.get();
-            book.setName(req.getName());
-            book.setAuthor(req.getAuthor());
-            cursor.save(book);
-            return ResponseEntity.ok(book);
-        }
-        return ResponseEntity.notFound().build();
+        Book data = cursor.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Book nao encontrado!"));
+        
+        data.setName(req.getName());
+        data.setAuthor(req.getAuthor());
+        cursor.save(data);
+        return ResponseEntity.ok(data);
     }
 
     @DeleteMapping("/{id}")
@@ -67,6 +64,6 @@ public class BookController {
             cursor.deleteById(id);
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.notFound().build();
+        throw new ResourceNotFoundException("Book nao encontrado");
     }
 }

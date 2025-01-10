@@ -53,6 +53,7 @@ public class BookController {
         
         data.setName(req.getName());
         data.setAuthor(req.getAuthor());
+        data.setRelease_date(req.getRelease_date());
         cursor.save(data);
         return ResponseEntity.ok(data);
     }

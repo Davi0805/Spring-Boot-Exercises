@@ -1,11 +1,15 @@
 package com.example.spring.model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,7 +21,11 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank(message = "Nome nao pode ser vazio")
     private String name;
+
+    @PastOrPresent
+    private LocalDate release_date;// data de lançamento
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)

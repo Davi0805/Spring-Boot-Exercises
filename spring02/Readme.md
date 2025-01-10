@@ -20,6 +20,7 @@ A lightweight Spring Boot application implementing a single chat room with real-
 - `/api/chat/history`: Returns the chat history (in-memory storage).
 
 ## Getting Started
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
+
+1. Create your models
+
+2. Setup the configurations of Events

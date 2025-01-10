@@ -19,5 +19,8 @@ Exercise: Create a REST API for managing a library system with the following fea
     Validation:
         Use Hibernate Validator annotations to validate fields like book title (not empty) and publication year (valid range).
 
+    Tests:
+        Integration and Unit Tests
+
     Exception Handling:
         Handle exceptions gracefully using @ControllerAdvice and @ExceptionHandler.

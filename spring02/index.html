@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Chat</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script>
+        var stompClient = null;
+
+        function connect() {
+            var socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/public', function (message) {
+                    showMessage(JSON.parse(message.body));
+                });
+            });
+        }
+
+        function sendMessage() {
+            var messageContent = document.getElementById("message").value;
+            if(messageContent && stompClient) {
+                var chatMessage = {
+                    sender: document.getElementById("username").value,
+                    content: messageContent,
+                    type: 'CHAT'
+                };
+                stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+                document.getElementById("message").value = '';
+            }
+        }
+
+        function showMessage(message) {
+            var messageElement = document.createElement('li');
+            messageElement.appendChild(document.createTextNode(message.sender + ": " + message.content));
+            document.getElementById('messages').appendChild(messageElement);
+        }
+
+        window.onload = function() {
+            connect();
+        };
+    </script>
+</head>
+<body>
+    <div>
+        <input type="text" id="username" placeholder="Enter your name"/>
+        <input type="text" id="message" placeholder="Enter your message"/>
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <ul id="messages"></ul>
+</body>
+</html>

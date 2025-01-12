@@ -3,6 +3,7 @@ package com.example.spring.model;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +27,7 @@ public class Book {
     private String name;
 
     @PastOrPresent
-    private LocalDate release_date;// data de lançamento
+    private LocalDate releaseDate; // changed from releasedate to releaseDate
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)

@@ -22,7 +22,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createOrder(@RequestBody Order order)
+    public ResponseEntity<Order> createOrder(@RequestBody Order order)
     {
         try {
             orderService.createOrder(order);

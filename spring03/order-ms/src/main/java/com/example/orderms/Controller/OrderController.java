@@ -21,17 +21,20 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody Order order)
     {
-        //TODO: Adicionar logica para criar pedido
-        //TODO: CHECAR SE O O PRODUTO POSSUI ESTOQUE
-        //TODO: DECIDIR ASYNC OU SYNC UTILIZANDO O
-        //TODO: ORDER STATUS
+        try {
+            orderService.createOrder(order);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+
         return ResponseEntity.ok(null);
     }
 
-    @GetMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable UUID id)
     {
         try {

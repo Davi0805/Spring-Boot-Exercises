@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package product;
+
+option optimize_for = SPEED;
+
+// Path para arquivos java
+option java_package = "com.example.grpc.product";
+option java_multiple_files = true; // para separar as messages em arquivos diferentes
+
+service ProductService {
+
+  // Checa se tal produto está em estoque
+  rpc CheckStock(ProductRequest) returns (StockResponse);
+
+  // Atualiza o estoque de um produto com o UUID para
+  // ser mais facil de identificar erros nos logs
+  rpc UpdateStock(OrderRequest) returns (OrderResponse);
+}
+
+message ProductRequest {
+  string productId = 1;
+  int32 quantity = 2;
+}
+
+message StockResponse {
+  bool inStock = 1;
+}
+
+message OrderRequest {
+  string OrderId = 1;
+  repeated ProductRequest products = 2;
+}
+
+message OrderResponse {
+  string OrderId = 1;
+  bool success = 2;
+}
+

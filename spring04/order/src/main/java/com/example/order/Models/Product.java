@@ -1,5 +1,7 @@
 package com.example.order.Models;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,4 +18,14 @@ import java.util.UUID;
 public class Product {
     private UUID id;
     private int quantity;
+
+    @Override
+    public String toString()
+    {
+        try {
+            return new ObjectMapper().writeValueAsString(this);
+        } catch (Exception e) {
+            return super.toString();
+        }
+    }
 }

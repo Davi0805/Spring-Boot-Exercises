@@ -1,3 +1,6 @@
+
+# ! OBVIAMENTE ISSO NAO IRIA PARA A PROD, SO NAO ESTA NO GITIGNORE POR SER UM
+# ! EXERCICIO EDUCACIONAL
 grpc:
   client:
     product-service:
@@ -5,3 +8,5 @@ grpc:
       negotiationType: PLAINTEXT
       enableKeepAlive: true
       keepAliveWithoutCalls: true
+  server:
+    port: 9091

@@ -1,6 +1,7 @@
 package com.example.orderms.Controller;
 
 import com.example.orderms.Models.Order;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.MediaType;
@@ -22,16 +23,17 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order)
+    public ResponseEntity<UUID> createOrder(@RequestBody Order order)
     {
+        UUID orderId;
         try {
-            orderService.createOrder(order);
+            orderId = orderService.createOrder(order);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(orderId);
     }
 
     @GetMapping(value = "/{id}")

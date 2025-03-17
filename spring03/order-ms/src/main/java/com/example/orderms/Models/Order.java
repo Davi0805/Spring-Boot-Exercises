@@ -1,8 +1,8 @@
 package com.example.orderms.Models;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.example.grpc.product.ProductRequest;
+import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,11 +16,22 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "orders")
 public class Order {
 
     @Id
     private UUID id;
+
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
     @ElementCollection
-    private List<String> products;
+    private List<Product> products;
+
+    public Order(List<Product> orderProducts)
+    {
+        this.id = UUID.randomUUID();
+        this.products = orderProducts;
+        this.status = OrderStatus.PENDING;
+    }
 }

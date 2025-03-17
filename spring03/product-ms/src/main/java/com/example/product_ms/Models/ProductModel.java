@@ -1,7 +1,6 @@
 package com.example.product_ms.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +16,10 @@ import java.util.UUID;
 public class ProductModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(unique = true)
     private String name;
 
     private Long quantity;

@@ -1,5 +1,6 @@
 package com.example.order.Services;
 
+import com.example.order.DTO.OrderDTO;
 import com.example.order.Kafka.MessageProducer;
 import com.example.order.Models.Order;
 import com.example.order.Repository.OrderRepository;
@@ -24,16 +25,16 @@ public class OrderService {
         this.msgProducer = producer;
     }
 
-    public UUID createOrder(Order order) throws RuntimeException
+    public UUID createOrder(OrderDTO orderdto) throws RuntimeException
     {
-
-        cursor.saveAndFlush(order);
+        Order order = new Order(orderdto.getProducts());
+        cursor.save(order);
 
         // TODO: LOGICA DE MENSAGERIA E CHECAGEM
         // Comandos para ajudar a debugar
         // docker exec --workdir /opt/kafka/bin/ -it broker sh
         // ./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic emailNotification --from-beginning
-        msgProducer.sendMessage("emailNotification", "Pedido " + order.getId() + " concluido com sucesso!");
+        msgProducer.sendMessage("emailNotification", order.toString());
 
         return order.getId();
     }

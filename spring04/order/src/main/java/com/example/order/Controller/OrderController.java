@@ -1,13 +1,11 @@
 package com.example.order.Controller;
 
+import com.example.order.DTO.OrderDTO;
 import com.example.order.Models.Order;
 import com.example.order.Services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,7 +23,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<UUID> createOrder(Order order)
+    public ResponseEntity<UUID> createOrder(@RequestBody OrderDTO order)
     {
         try {
             UUID orderId = cursor.createOrder(order);

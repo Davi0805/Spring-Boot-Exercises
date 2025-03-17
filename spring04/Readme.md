@@ -4,7 +4,7 @@
 
 Este exercício envolve a criação de um sistema de e-commerce com dois microserviços principais, onde um dos microserviços de **Pedidos** vai gerar eventos de pedidos realizados, e o microserviço de **Notificações** vai escutar esses eventos e enviar notificações (por exemplo, e-mail ou SMS) para o usuário.
 
-Obs: Nao e necessario criar uma entidade para user nesse exercicio, ja que o foco se trata de aprender a utilizar os conceitos de mensageria com o kafka
+Obs: Nao e necessario criar uma entidade para user nesse exercicio, ja que o foco se trata de aprender a utilizar os conceitos de mensageria com o kafka podendo ser adicionado no model Order para simplificar
 
 O objetivo aqui é criar uma arquitetura baseada em eventos com Kafka como sistema de mensageria, permitindo que os microserviços se comuniquem de maneira assíncrona.
 

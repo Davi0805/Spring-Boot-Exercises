@@ -38,6 +38,7 @@ public class ProductGrpcService extends ProductServiceGrpc.ProductServiceImplBas
                     .setInStock(true)
                     .build();
         } else {
+            System.out.println("Sem estoque para productId = " + productId);
             response = StockResponse.newBuilder()
                     .setInStock(false)
                     .build();

@@ -44,6 +44,6 @@ public class UserService {
         JwtSession session = new JwtSession(jwt.generateToken(String.valueOf(tempUser.getId())), tempUser.getNome());
         redisCursor.save(session);
 
-        return new FrontEndMetadataDTO(tempUser.getId(), tempUser.getNome());
+        return new FrontEndMetadataDTO(tempUser.getId(), tempUser.getNome(), session.getId());
     }
 }

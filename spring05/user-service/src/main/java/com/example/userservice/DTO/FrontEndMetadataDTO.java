@@ -14,4 +14,5 @@ import java.util.UUID;
 public class FrontEndMetadataDTO {
     private UUID id;
     private String nome;
+    private String token;
 }

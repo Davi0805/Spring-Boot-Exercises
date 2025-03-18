@@ -19,7 +19,7 @@ message ProductResponse {
 
 message OrderRequest {
     string orderId = 1;
-    repeated ProductResponse products = 2;
+    repeated ProductRequest products = 2;
 }
 
 message OrderResponse {

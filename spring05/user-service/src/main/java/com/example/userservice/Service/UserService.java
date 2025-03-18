@@ -41,7 +41,7 @@ public class UserService {
             throw new RuntimeException("Email ou senha nao encontrado!");
 
         // JWT - SALVA JWT E SESSION INFO EM CACHE
-        JwtSession session = new JwtSession(jwt.generateToken(String.valueOf(tempUser.getId())), tempUser.getNome());
+        JwtSession session = new JwtSession(jwt.generateToken(String.valueOf(tempUser.getId())), tempUser.getEmail(), tempUser.getNome());
         redisCursor.save(session);
 
         return new FrontEndMetadataDTO(tempUser.getId(), tempUser.getNome(), session.getId());

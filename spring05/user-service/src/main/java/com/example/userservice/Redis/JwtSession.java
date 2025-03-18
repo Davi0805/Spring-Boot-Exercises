@@ -18,6 +18,7 @@ public class JwtSession implements Serializable {
 
     @org.springframework.data.annotation.Id
     private String Id; //token
+    private String email;
     private String nome;
 
     // Implementar depois para sistemas complexos de cybersecurity

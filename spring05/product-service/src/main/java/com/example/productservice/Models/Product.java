@@ -31,6 +31,8 @@ public class Product {
     @Column(nullable = false)
     private int quantity;
 
+    private String urlImage;
+
     // A partir de apenas 5 unidades,
     // o produto é considerado como "últimas peças"
     boolean last_pieces;

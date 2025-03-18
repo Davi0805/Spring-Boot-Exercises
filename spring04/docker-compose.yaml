@@ -17,3 +17,13 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_NUM_PARTITIONS: 3
+
+  order:
+    build: ./order
+    ports:
+      - "8080:8080"
+
+  notification-service:
+    build: ./notification
+    ports:
+      - "8081:8081"

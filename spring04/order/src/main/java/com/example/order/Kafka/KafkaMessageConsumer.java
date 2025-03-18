@@ -30,7 +30,7 @@ public class KafkaMessageConsumer {
     @KafkaListener(topics = "emailNotified", groupId = "notification-group")
     public void listen(String message)
     {
-        System.out.println("Mensagem recebida no Consumer: " + message);
+        System.out.println("Pedido enviado para email: " + message);
 
         //LOGICA DE EMAIL OU NOTIFICACAO ACONTECERIA AQUUI
         Order order = cursor.findById(UUID.fromString(message)).orElseThrow(() -> new RuntimeException());

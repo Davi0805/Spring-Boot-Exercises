@@ -24,10 +24,10 @@ public class GrpcMessageService extends ProductServiceGrpc.ProductServiceImplBas
         ProductResponse response;
         try {
             Product temp = cursor.findById(UUID.fromString(request.getProductId()))
-                    .orElseThrow(() -> new RuntimeException("Produto nao encontrado"));
+                    .orElseThrow(() -> new RuntimeException("Produto" + request.getProductId() + " nao encontrado"));
 
             if (temp.getQuantity() < request.getQuantity() && request.getQuantity() > 0)
-                throw new RuntimeException("Estoque em falta");
+                throw new RuntimeException("Estoque do produto" + request.getProductId() + " em falta para quantidade " + request.getQuantity());
 
             response = ProductResponse.newBuilder()
                     .setInStock(true)
@@ -48,7 +48,7 @@ public class GrpcMessageService extends ProductServiceGrpc.ProductServiceImplBas
     public void updateStock(OrderRequest request, StreamObserver<OrderResponse> responseObserver)
     {
         OrderResponse response;
-        String orderId;
+        String orderId = request.getOrderId();
         try {
 
             for (ProductRequest temp : request.getProductsList())
@@ -58,10 +58,35 @@ public class GrpcMessageService extends ProductServiceGrpc.ProductServiceImplBas
             }
 
             response = OrderResponse.newBuilder().setSuccess(true).build();
+            System.out.println("INFO: Pedido " + orderId + " reservado com sucesso!");
 
         } catch (Exception e) {
-            System.out.println("ERRO: " + e.getMessage());
+            System.out.println("ERRO: " + e.getMessage() + " | OrderId: " + orderId);
             response = OrderResponse.newBuilder().setSuccess(false).build();
+        }
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void cancelOrder(OrderRequest request, StreamObserver<OrderCanceledResponse> responseObserver)
+    {
+        OrderCanceledResponse response;
+        String orderId = request.getOrderId();
+
+        try {
+            for(ProductRequest temp : request.getProductsList())
+            {
+                if (cursor.incrementStock(UUID.fromString(temp.getProductId()), temp.getQuantity()) == 0)
+                    throw new RuntimeException("Falha ao cancelar e incrementar stock de volta");
+            }
+            response = OrderCanceledResponse.newBuilder().setSuccess(true).build();
+            System.out.println("INFO: Pedido " + orderId + " cancelado com sucesso!");
+
+        } catch (Exception e) {
+            System.out.println("ERRO: " + e.getMessage() + " | OrderId: " + orderId);
+            response = OrderCanceledResponse.newBuilder().setSuccess(false).build();
         }
 
         responseObserver.onNext(response);

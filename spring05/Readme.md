@@ -67,8 +67,11 @@ Este projeto implementa um sistema de e-commerce distribuído utilizando **micro
 {
   "id": "UUID",
   "name": "Camiseta",
+   "description": "camisa da lacoste",
+   "urlImage": "<urlParaBucket>",
   "stock": 50,
-  "price": 60.00
+  "price": 60.00,
+   "last_pieces": true
 }
 ```
 

@@ -5,6 +5,7 @@ import com.example.userservice.DTO.LoginDTO;
 import com.example.userservice.Models.User;
 import com.example.userservice.Redis.JwtSession;
 import com.example.userservice.Service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -29,7 +30,7 @@ public class UserController {
         this.service = user;
     }
 
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<FrontEndMetadataDTO> login(@RequestBody LoginDTO req)
     {
         try {
@@ -41,12 +42,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createUser(User req)
+    public ResponseEntity<String> createUser(@RequestBody User req)
     {
         try {
             service.createUser(req);
             return ResponseEntity.ok("User criado com sucesso!");
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body("Erro: Falha ao criar usuario");
         }
     }

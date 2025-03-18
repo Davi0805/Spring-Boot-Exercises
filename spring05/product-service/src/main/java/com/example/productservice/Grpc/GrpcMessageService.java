@@ -51,9 +51,10 @@ public class GrpcMessageService extends ProductServiceGrpc.ProductServiceImplBas
         String orderId;
         try {
 
-            for (ProductResponse temp : request.getProductsList())
+            for (ProductRequest temp : request.getProductsList())
             {
-                // TODO: QUERY DE DECREMENTO NO PRODUCT REPOSITORY
+                if (cursor.decrementStock(UUID.fromString(temp.getProductId()), temp.getQuantity()) == 0)
+                    throw new RuntimeException("Falha ao reservar produto!");
             }
 
             response = OrderResponse.newBuilder().setSuccess(true).build();

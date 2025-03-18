@@ -1,13 +1,14 @@
 package com.example.productservice.Controller;
 
+import com.example.productservice.DTO.FrontEndProductDTO;
 import com.example.productservice.Models.Product;
 import com.example.productservice.Service.ProductService;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -28,6 +29,17 @@ public class ProductController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body("Erro ao criar produto");
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FrontEndProductDTO>> getAllProducts()
+    {
+        try {
+            return ResponseEntity.ok(productService.getAllProducts());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 }

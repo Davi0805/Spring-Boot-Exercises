@@ -14,6 +14,6 @@ public class MessageProducer {
     public void sendMessage(String topic, String messsage)
     {
         kafkaTemplate.send(topic, messsage);
-        System.out.println("Mensagem enviada para o kafka no topico " + topic + ": " + messsage);
+        System.out.println(topic + ": " + messsage);
     }
 }

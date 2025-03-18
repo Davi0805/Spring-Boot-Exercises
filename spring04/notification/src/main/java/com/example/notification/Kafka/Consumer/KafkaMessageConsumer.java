@@ -23,14 +23,16 @@ public class KafkaMessageConsumer {
     @KafkaListener(topics = "emailNotification", groupId = "notification-group")
     public void listen(String message)
     {
-        System.out.println("Mensagem recebida no Consumer: " + message);
+        //System.out.println("Mensagem recebida no Consumer: " + message);
 
         //LOGICA DE EMAIL OU NOTIFICACAO ACONTECERIA AQUUI
+        // POREM NAO QUERO GASTAR MEU SENDGRID COM O EXERCICIO
 
         // CHAMA CONSUMER PARA MODIFICAR STATUS DO ORDER PARA NOTIFICADO
+        // CONSUMER MANDA MENSAGEM DE VOLTA PARA MICROSERVICO ORDER E MUDA STATUS PARA NOTIFICADO
         try {
             Order order = desserializer.readValue(message, Order.class);
-            System.out.println("Order deserializado: " + order);
+            //System.out.println("Order deserializado: " + order);
             messageProducer.sendMessage("emailNotified", String.valueOf(order.getId()));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());

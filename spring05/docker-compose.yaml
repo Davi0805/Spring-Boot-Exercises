@@ -1,0 +1,5 @@
+services:
+  redis:
+    build: ./Redis
+    ports:
+      - "6379:6379"

@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package product;
+
+option optimize_for = SPEED;
+
+option java_package = "com.example.grpc.product";
+option java_multiple_files = true;
+
+message ProductRequest {
+  string productId = 1;
+  int32 quantity = 2;
+}
+
+message ProductResponse {
+  bool inStock = 1;
+  double price = 2;
+}
+
+message OrderRequest {
+  string orderId = 1;
+  repeated ProductRequest products = 2;
+}
+
+message OrderResponse {
+  bool success = 1;
+}
+
+message OrderCanceledResponse {
+  bool success = 1;
+}
+
+service ProductService {
+
+  rpc checkStock(ProductRequest) returns (ProductResponse);
+
+  rpc updateStock(OrderRequest) returns (OrderResponse);
+
+  rpc CancelOrder(OrderRequest) returns (OrderCanceledResponse);
+
+}

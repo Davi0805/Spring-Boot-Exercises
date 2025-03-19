@@ -45,6 +45,7 @@ public class OrderController {
                                        @RequestBody OrderInDTO order) {
         token = extractToken(token);
         JwtSession session;
+        UUID orderId;
         Order req = new Order(order.getItems());
         try {
             session = redisCursor.findById(token).orElseThrow(() -> new RuntimeException("Token não encontrado"));
@@ -70,13 +71,17 @@ public class OrderController {
             req.setUserId(userId);
             req.setTotalPrice(totalPrice);
 
+
             cursor.createOrder(req);
+
+            orderId = req.getId();
+
         } catch (Exception e) {
             System.out.println("ERRO:" + e.getMessage());
             return ResponseEntity.badRequest().body("ERRO:" + e.getMessage());
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(orderId);
     }
 
     private String extractToken(String bearerToken) {

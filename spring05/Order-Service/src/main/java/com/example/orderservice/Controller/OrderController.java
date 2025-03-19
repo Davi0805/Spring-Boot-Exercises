@@ -4,7 +4,7 @@ import com.example.grpc.product.ProductResponse;
 import com.example.orderservice.Models.Order;
 import com.example.orderservice.Models.OrderStatus;
 import com.example.orderservice.Models.Product;
-import com.example.orderservice.OrderInDTO;
+import com.example.orderservice.DTO.OrderInDTO;
 import com.example.orderservice.Redis.JwtSession;
 import com.example.orderservice.Repository.JwtSessionRepository;
 import com.example.orderservice.Service.OrderService;
@@ -13,12 +13,9 @@ import com.example.orderservice.Util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 
 import java.util.List;
 import java.util.UUID;
-
-import static org.springframework.web.servlet.function.ServerResponse.badRequest;
 
 @RestController
 @RequestMapping("/order")
@@ -33,7 +30,7 @@ public class OrderController {
 
     @Autowired
     public OrderController(JwtSessionRepository redisCursor, grpcOrderClient client,
-                            JwtUtil jwt, OrderService orderCursor) {
+                           JwtUtil jwt, OrderService orderCursor) {
         this.grpcClient = client;
         this.redisCursor = redisCursor;
         this.jwt = jwt;
@@ -42,7 +39,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestHeader("Authorization") String token,
-                                       @RequestBody OrderInDTO order) {
+                                         @RequestBody OrderInDTO order) {
         token = extractToken(token);
         JwtSession session;
         UUID orderId;
@@ -56,12 +53,11 @@ public class OrderController {
             double totalPrice = 0;
             List<Product> produtos = order.getItems();
 
-            for (Product prodIt : produtos)
-            {
+            for (Product prodIt : produtos) {
                 ProductResponse response = grpcClient.checkStock(String.valueOf(prodIt.getId()), prodIt.getQuantity());
                 if (!response.getInStock())
                     throw new RuntimeException("Produto " + prodIt.getId() + " sem estoque dessa quantidade!");
-                totalPrice += response.getPrice();
+                totalPrice += response.getPrice() * prodIt.getQuantity();
             }
 
             if (!grpcClient.updateStock(String.valueOf(req.getId()), produtos))
@@ -71,11 +67,9 @@ public class OrderController {
             req.setUserId(userId);
             req.setTotalPrice(totalPrice);
 
-
-            cursor.createOrder(req);
-
             orderId = req.getId();
 
+            cursor.createOrder(req);
         } catch (Exception e) {
             System.out.println("ERRO:" + e.getMessage());
             return ResponseEntity.badRequest().body("ERRO:" + e.getMessage());

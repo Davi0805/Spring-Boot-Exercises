@@ -78,6 +78,29 @@ public class OrderController {
         return ResponseEntity.ok(orderId);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOrder(@RequestHeader("Authorization") String token,
+                                          @PathVariable UUID id) {
+        JwtSession session;
+        UUID userId;
+        token = extractToken(token);
+        try {
+            session = redisCursor.findById(token).orElseThrow(() -> new RuntimeException("Falha ao se autenticar!"));
+            if (!jwt.validateJwtToken(session.getId()))
+                throw new RuntimeException("Falha ao se autenticar!");
+            userId = UUID.fromString(jwt.getUUIDFromToken(session.getId()));
+
+            Order order = cursor.getOrderById(id);
+            System.out.println("Order.getUserId = " + order.getUserId() + " | userId = " + userId);
+            if (!order.getUserId().equals(userId))
+                throw new RuntimeException("Sem permissao para ver esse pedido!");
+
+            return ResponseEntity.ok(order);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private String extractToken(String bearerToken) {
         if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(BEARER_PREFIX.length());

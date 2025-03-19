@@ -1,0 +1,5 @@
+# Mudei para ver se os erros poderiam estar sendo conflito
+# com algum prometheus na 42
+grpc:
+  server:
+    port: 9091

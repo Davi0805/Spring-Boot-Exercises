@@ -1,0 +1,12 @@
+
+# ! OBVIAMENTE ISSO NAO IRIA PARA A PROD, SO NAO ESTA NO GITIGNORE POR SER UM
+# ! EXERCICIO EDUCACIONAL
+grpc:
+  client:
+    product-service:
+      address: 'static://localhost:9090'
+      negotiationType: PLAINTEXT
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+  server:
+    port: 9091

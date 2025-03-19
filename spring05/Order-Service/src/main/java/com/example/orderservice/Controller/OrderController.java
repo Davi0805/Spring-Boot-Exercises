@@ -7,6 +7,7 @@ import com.example.orderservice.Models.Product;
 import com.example.orderservice.DTO.OrderInDTO;
 import com.example.orderservice.Redis.JwtSession;
 import com.example.orderservice.Repository.JwtSessionRepository;
+import com.example.orderservice.Service.KafkaProducerService;
 import com.example.orderservice.Service.OrderService;
 import com.example.orderservice.Service.grpcOrderClient;
 import com.example.orderservice.Util.JwtUtil;
@@ -27,14 +28,16 @@ public class OrderController {
     private final grpcOrderClient grpcClient;
     private final JwtUtil jwt;
     private final OrderService cursor;
+    private final KafkaProducerService kafka;
 
     @Autowired
     public OrderController(JwtSessionRepository redisCursor, grpcOrderClient client,
-                           JwtUtil jwt, OrderService orderCursor) {
+                           JwtUtil jwt, OrderService orderCursor, KafkaProducerService kafka) {
         this.grpcClient = client;
         this.redisCursor = redisCursor;
         this.jwt = jwt;
         this.cursor = orderCursor;
+        this.kafka = kafka;
     }
 
     @PostMapping
@@ -70,6 +73,8 @@ public class OrderController {
             orderId = req.getId();
 
             cursor.createOrder(req);
+
+            kafka.sendMessage("orders", "Pedido " + orderId + " criado!");
         } catch (Exception e) {
             System.out.println("ERRO:" + e.getMessage());
             return ResponseEntity.badRequest().body("ERRO:" + e.getMessage());
@@ -91,7 +96,7 @@ public class OrderController {
             userId = UUID.fromString(jwt.getUUIDFromToken(session.getId()));
 
             Order order = cursor.getOrderById(id);
-            System.out.println("Order.getUserId = " + order.getUserId() + " | userId = " + userId);
+            //System.out.println("Order.getUserId = " + order.getUserId() + " | userId = " + userId);
             if (!order.getUserId().equals(userId))
                 throw new RuntimeException("Sem permissao para ver esse pedido!");
 

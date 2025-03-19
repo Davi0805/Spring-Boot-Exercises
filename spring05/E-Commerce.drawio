@@ -1,0 +1,92 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:136.0) Gecko/20100101 Firefox/136.0" version="26.1.1">
+  <diagram name="Page-1" id="OdbStsEsjApLCeO1ALZP">
+    <mxGraphModel dx="1434" dy="720" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-9" value="&lt;div&gt;Kafka&lt;/div&gt;&lt;div&gt;Broker&lt;/div&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="270" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0;entryDx=0;entryDy=30;entryPerimeter=0;fontColor=#FF0000;strokeColor=#000000;exitX=0.5;exitY=0.063;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="dvGeTo-aVxXoKS7nLfVM-10" target="dvGeTo-aVxXoKS7nLfVM-9">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="180" y="320" as="targetPoint" />
+            <mxPoint x="180" y="510" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="120" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-16" value="Order Created Message&amp;nbsp; " style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="dvGeTo-aVxXoKS7nLfVM-15">
+          <mxGeometry x="0.28" y="-1" relative="1" as="geometry">
+            <mxPoint x="31" y="-11" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-10" value="&lt;div&gt;Order&lt;/div&gt;&lt;div&gt;(Pedidos)&lt;/div&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="540" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#007FFF;" edge="1" parent="1" source="dvGeTo-aVxXoKS7nLfVM-11" target="dvGeTo-aVxXoKS7nLfVM-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-11" value="&lt;div&gt;Products&lt;/div&gt;&lt;div&gt;(Inventario)&lt;/div&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" vertex="1" parent="1">
+          <mxGeometry x="260" y="540" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-12" value="&lt;div&gt;User&lt;/div&gt;&lt;div&gt;(Usuario)&lt;/div&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="540" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-13" value="&lt;div&gt;Payment&lt;/div&gt;&lt;div&gt;(Pagamentos)&lt;/div&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="540" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-19" value="&lt;div&gt;Redis&lt;/div&gt;&lt;div&gt;(JwtSessions)&lt;/div&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="400" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0;entryDx=0;entryDy=30;entryPerimeter=0;labelBackgroundColor=none;" edge="1" parent="1" source="dvGeTo-aVxXoKS7nLfVM-10" target="dvGeTo-aVxXoKS7nLfVM-19">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="140" y="430" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-21" value="&lt;div&gt;Jwt Session check&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;" vertex="1" connectable="0" parent="dvGeTo-aVxXoKS7nLfVM-20">
+          <mxGeometry x="-0.016" y="2" relative="1" as="geometry">
+            <mxPoint x="3" y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0;entryDx=120;entryDy=50;entryPerimeter=0;" edge="1" parent="1" source="dvGeTo-aVxXoKS7nLfVM-12" target="dvGeTo-aVxXoKS7nLfVM-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-26" value="&lt;div&gt;Post Jwt token&lt;/div&gt;&lt;div&gt;&amp;nbsp;and&lt;/div&gt;&lt;div&gt;sessions metadata&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;" vertex="1" connectable="0" parent="dvGeTo-aVxXoKS7nLfVM-24">
+          <mxGeometry x="0.3" y="-2" relative="1" as="geometry">
+            <mxPoint x="48" y="38" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.008;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontColor=#007FFF;strokeColor=#007FFF;" edge="1" parent="1" source="dvGeTo-aVxXoKS7nLfVM-10" target="dvGeTo-aVxXoKS7nLfVM-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-31" value="&lt;span&gt;gRPC&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;" vertex="1" connectable="0" parent="dvGeTo-aVxXoKS7nLfVM-29">
+          <mxGeometry x="0.117" y="-2" relative="1" as="geometry">
+            <mxPoint x="-4" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.008;entryY=0.388;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="dvGeTo-aVxXoKS7nLfVM-13" target="dvGeTo-aVxXoKS7nLfVM-19">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="431" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-36" value="Jwt Session check" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;" vertex="1" connectable="0" parent="dvGeTo-aVxXoKS7nLfVM-35">
+          <mxGeometry x="-0.2124" relative="1" as="geometry">
+            <mxPoint x="-26" y="-11" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dvGeTo-aVxXoKS7nLfVM-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.008;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="dvGeTo-aVxXoKS7nLfVM-13" target="dvGeTo-aVxXoKS7nLfVM-9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="310" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

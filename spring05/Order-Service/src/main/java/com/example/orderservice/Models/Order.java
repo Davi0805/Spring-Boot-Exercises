@@ -19,11 +19,12 @@ public class Order {
 
     public Order(List<Product> items)
     {
+        this.id = UUID.randomUUID();
         this.items = items;
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    //@GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private UUID userId;

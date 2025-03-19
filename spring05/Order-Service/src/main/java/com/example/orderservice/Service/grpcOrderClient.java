@@ -21,8 +21,7 @@ public class grpcOrderClient {
         ProductRequest request = ProductRequest.newBuilder()
                 .setProductId(id).setQuantity(quantity).build();
 
-        ProductResponse response = productServiceBlockingStub.checkStock(request);
-        return response;
+        return productServiceBlockingStub.checkStock(request);
     }
 
     public boolean updateStock(String id, List<Product> products)

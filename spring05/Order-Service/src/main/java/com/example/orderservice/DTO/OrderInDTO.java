@@ -1,7 +1,6 @@
-package com.example.orderservice;
+package com.example.orderservice.DTO;
 
 import com.example.orderservice.Models.Product;
-import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

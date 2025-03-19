@@ -15,13 +15,16 @@ public class OrderService {
     private final OrderRepository cursor;
 
     @Autowired
-    public OrderService(OrderRepository repo)
-    {
+    public OrderService(OrderRepository repo) {
         this.cursor = repo;
     }
 
-    public void createOrder(Order order)
-    {
+    public void createOrder(Order order) {
         cursor.save(order);
+    }
+
+    public Order getOrderById(UUID id)
+    {
+        return cursor.findById(id).orElseThrow(() -> new RuntimeException("Pedido nao encontrado!"));
     }
 }

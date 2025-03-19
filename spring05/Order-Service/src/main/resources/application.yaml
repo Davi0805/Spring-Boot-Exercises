@@ -4,9 +4,9 @@
 grpc:
   client:
     product-service:
-      address: 'static://localhost:9090'
+      address: 'static://localhost:9091'
       negotiationType: PLAINTEXT
       enableKeepAlive: true
       keepAliveWithoutCalls: true
   server:
-    port: 9091
+    port: 9090

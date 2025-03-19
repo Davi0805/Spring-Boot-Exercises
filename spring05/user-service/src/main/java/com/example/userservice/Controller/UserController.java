@@ -41,7 +41,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(service.login(req));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage() + " | " + e.getCause());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -53,7 +53,7 @@ public class UserController {
             service.createUser(req);
             return ResponseEntity.ok("User criado com sucesso!");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage() + " | " + e.getCause());
             return ResponseEntity.badRequest().body("Erro: Falha ao criar usuario");
         }
     }

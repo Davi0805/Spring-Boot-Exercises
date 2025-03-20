@@ -8,5 +8,10 @@ grpc:
       negotiationType: PLAINTEXT
       enableKeepAlive: true
       keepAliveWithoutCalls: true
+    payment-service:
+      address: 'static://localhost:9095'
+      negotiationType: PLAINTEXT
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
   server:
     port: 9090

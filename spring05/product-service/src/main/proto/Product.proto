@@ -14,7 +14,8 @@ message ProductRequest {
 
 message ProductResponse {
     bool inStock = 1;
-    double price = 2;
+    string productName = 2;
+    double price = 3;
 }
 
 message OrderRequest {

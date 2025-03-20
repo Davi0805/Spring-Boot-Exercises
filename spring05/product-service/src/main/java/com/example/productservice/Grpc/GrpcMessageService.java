@@ -32,6 +32,7 @@ public class GrpcMessageService extends ProductServiceGrpc.ProductServiceImplBas
             response = ProductResponse.newBuilder()
                     .setInStock(true)
                     .setPrice(temp.getPrice())
+                    .setProductName(temp.getName())
                     .build();
         } catch (Exception e) {
             System.out.println("ERROR: " + e.getMessage());

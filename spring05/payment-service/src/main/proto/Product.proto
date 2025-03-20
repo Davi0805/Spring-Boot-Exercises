@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package product;
+
+option optimize_for = SPEED;
+
+option java_package = "com.example.grpc.product";
+option java_multiple_files = true;
+
+message ProductPaymentRequest {
+  string productId = 1;
+  int32 quantity = 2;
+  int32 unitPrice = 3;
+}
+
+message PaymentRequest {
+    string orderId = 1;
+    repeated ProductPaymentRequest products = 2;
+}
+
+message OrderPaymentLink {
+    bool success = 1;
+    string paymentLink = 2;
+}
+
+service ProductService {
+  rpc getPaymentLink(PaymentRequest) returns (OrderPaymentLink);
+}

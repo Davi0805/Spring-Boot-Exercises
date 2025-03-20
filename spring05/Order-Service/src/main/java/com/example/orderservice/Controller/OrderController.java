@@ -1,5 +1,6 @@
 package com.example.orderservice.Controller;
 
+import com.example.grpc.product.ProductPaymentRequest;
 import com.example.grpc.product.ProductResponse;
 import com.example.orderservice.DTO.KafkaOrderMessageDTO;
 import com.example.orderservice.Models.Order;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,11 +60,19 @@ public class OrderController {
 
             UUID userId = UUID.fromString(jwt.getUUIDFromToken(session.getId()));
 
+            List<ProductPaymentRequest> productsList = new ArrayList<>();
+
+
             // Checagem de estoque e soma de preco do pedido
             double totalPrice = 0;
             List<Product> produtos = order.getItems();
             for (Product prodIt : produtos) {
                 ProductResponse response = grpcClient.checkStock(String.valueOf(prodIt.getId()), prodIt.getQuantity());
+                    productsList.add(ProductPaymentRequest.newBuilder()
+                            .setProductId(String.valueOf(String.valueOf(prodIt.getId())))
+                            .setQuantity(prodIt.getQuantity())
+                            .setUnitPrice(response.getPrice())
+                            .setProductName(response.getProductName()).build());
                 if (!response.getInStock())
                     throw new RuntimeException("Produto " + prodIt.getId() + " sem estoque dessa quantidade!");
                 totalPrice += response.getPrice() * prodIt.getQuantity();
@@ -80,10 +90,10 @@ public class OrderController {
             cursor.createOrUpdateOrder(req);
 
             // Posta mensagem no kafka, porem TODO: TLVZ TRANSFORMAR EM ASYNC
-            KafkaOrderMessageDTO orderMessage = new KafkaOrderMessageDTO(req.getId(), userId, session.getEmail(), totalPrice);
-            kafka.sendMessage("orders", orderMessage.toString());
+//            KafkaOrderMessageDTO orderMessage = new KafkaOrderMessageDTO(req.getId(), userId, session.getEmail(), totalPrice);
+//            kafka.sendMessage("orders", orderMessage.toString());
 
-            paymentLink = grpcClient.getPaymentLink(String.valueOf(req.getId()), produtos);
+            paymentLink = grpcClient.getPaymentLink(String.valueOf(req.getId()), productsList);
         } catch (Exception e) {
             System.out.println("ERRO:" + e.getMessage());
             return ResponseEntity.badRequest().body("ERRO:" + e.getMessage());

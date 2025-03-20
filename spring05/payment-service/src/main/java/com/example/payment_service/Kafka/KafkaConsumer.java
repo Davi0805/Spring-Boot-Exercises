@@ -29,8 +29,6 @@ public class KafkaConsumer {
         System.out.println("Mensagem consumida: " + message);
         try {
             orderDetails = desserializer.readValue(message, KafkaOrderMessageDTO.class);
-            String paymentUrl = payService.createPaymentLink(orderDetails);
-            System.out.println("[DEBUG]: URL PARA PAGAMENTO - " + paymentUrl);
         } catch (Exception e) {
             System.out.println("ERRO: Falha ao processar order recebido do kafka | " + e.getMessage());
             throw new RuntimeException(e);

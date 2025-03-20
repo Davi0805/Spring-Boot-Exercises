@@ -4,6 +4,7 @@ import com.example.orderservice.DTO.KafkaPaymentMessageDTO;
 import com.example.orderservice.Models.Order;
 import com.example.orderservice.Models.OrderStatus;
 import com.example.orderservice.Service.OrderService;
+import com.example.orderservice.Service.grpcOrderClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -14,12 +15,14 @@ public class KafkaConsumer {
 
     private final ObjectMapper desserializer;
     private final OrderService cursor;
+    private final grpcOrderClient grpcClient;
 
     @Autowired
-    public KafkaConsumer(ObjectMapper objM, OrderService orderService)
-    {
+    public KafkaConsumer(ObjectMapper objM, OrderService orderService,
+                         grpcOrderClient grpcClient) {
         this.desserializer = objM;
         this.cursor = orderService;
+        this.grpcClient = grpcClient;
     }
 
     @KafkaListener(topics = "orderPayments", groupId = "order-group")
@@ -31,8 +34,10 @@ public class KafkaConsumer {
             Order temp = cursor.getOrderById(dto.getOrderId());
             if (dto.isSuccess())
                 temp.setStatus(OrderStatus.PROCESSING);
-            else
+            else {
                 temp.setStatus(OrderStatus.CANCELLED);
+                grpcClient.cancelOrder(String.valueOf(temp.getId()), temp.getItems());
+            }
             cursor.createOrUpdateOrder(temp);
         } catch (Exception e) {
             System.out.println("ERRO: " + e.getMessage());

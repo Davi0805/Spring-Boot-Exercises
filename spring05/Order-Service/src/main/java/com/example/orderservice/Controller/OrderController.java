@@ -76,7 +76,7 @@ public class OrderController {
             req.setUserId(userId);
             req.setTotalPrice(totalPrice);
 
-            cursor.createOrder(req);
+            cursor.createOrUpdateOrder(req);
 
             // Posta mensagem no kafka, porem TODO: TLVZ TRANSFORMAR EM ASYNC
             KafkaOrderMessageDTO orderMessage = new KafkaOrderMessageDTO(req.getId(), userId, session.getEmail(), totalPrice);

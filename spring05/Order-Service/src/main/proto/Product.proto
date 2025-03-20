@@ -30,6 +30,18 @@ message OrderCanceledResponse {
   bool success = 1;
 }
 
+message ProductPaymentRequest {
+  string productId = 1;
+  string productName = 2;
+  int32 quantity = 3;
+  double unitPrice = 4;
+}
+
+message PaymentRequest {
+  string orderId = 1;
+  repeated ProductPaymentRequest products = 2;
+}
+
 message OrderPaymentLink {
     bool success = 1;
     string paymentLink = 2;
@@ -41,7 +53,7 @@ service ProductService {
 
   rpc updateStock(OrderRequest) returns (OrderResponse);
 
-  rpc getPaymentLink(OrderRequest) returns (OrderPaymentLink);
+  rpc getPaymentLink(PaymentRequest) returns (OrderPaymentLink);
 
   rpc CancelOrder(OrderRequest) returns (OrderCanceledResponse);
 

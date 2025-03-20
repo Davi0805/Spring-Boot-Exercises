@@ -1,6 +1,7 @@
 package com.example.orderservice.Controller;
 
 import com.example.grpc.product.ProductResponse;
+import com.example.orderservice.DTO.KafkaOrderMessageDTO;
 import com.example.orderservice.Models.Order;
 import com.example.orderservice.Models.OrderStatus;
 import com.example.orderservice.Models.Product;
@@ -40,6 +41,8 @@ public class OrderController {
         this.kafka = kafka;
     }
 
+    // TODO: REFAC FOCADO EM DESACOPLAMENTO
+
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestHeader("Authorization") String token,
                                          @RequestBody OrderInDTO order) {
@@ -53,9 +56,10 @@ public class OrderController {
                 throw new RuntimeException("Falha ao se autenticar!");
 
             UUID userId = UUID.fromString(jwt.getUUIDFromToken(session.getId()));
+
+            // Checagem de estoque e soma de preco do pedido
             double totalPrice = 0;
             List<Product> produtos = order.getItems();
-
             for (Product prodIt : produtos) {
                 ProductResponse response = grpcClient.checkStock(String.valueOf(prodIt.getId()), prodIt.getQuantity());
                 if (!response.getInStock())
@@ -63,6 +67,8 @@ public class OrderController {
                 totalPrice += response.getPrice() * prodIt.getQuantity();
             }
 
+            // Atualiza inventario e checa sucesso em caso de concorrencia
+            // Por mais improvavel que seja, em prod pode acontecer
             if (!grpcClient.updateStock(String.valueOf(req.getId()), produtos))
                 throw new RuntimeException("Erro ao atualizar inventario!");
 
@@ -70,22 +76,22 @@ public class OrderController {
             req.setUserId(userId);
             req.setTotalPrice(totalPrice);
 
-            orderId = req.getId();
-
             cursor.createOrder(req);
 
-            kafka.sendMessage("orders", "Pedido " + orderId + " criado!");
+            // Posta mensagem no kafka, porem TODO: TLVZ TRANSFORMAR EM ASYNC
+            KafkaOrderMessageDTO orderMessage = new KafkaOrderMessageDTO(req.getId(), userId, session.getEmail(), totalPrice);
+            kafka.sendMessage("orders", orderMessage.toString());
         } catch (Exception e) {
             System.out.println("ERRO:" + e.getMessage());
             return ResponseEntity.badRequest().body("ERRO:" + e.getMessage());
         }
 
-        return ResponseEntity.ok(orderId);
+        return ResponseEntity.ok(req.getId());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrder(@RequestHeader("Authorization") String token,
-                                          @PathVariable UUID id) {
+                                      @PathVariable UUID id) {
         JwtSession session;
         UUID userId;
         token = extractToken(token);
@@ -96,7 +102,6 @@ public class OrderController {
             userId = UUID.fromString(jwt.getUUIDFromToken(session.getId()));
 
             Order order = cursor.getOrderById(id);
-            //System.out.println("Order.getUserId = " + order.getUserId() + " | userId = " + userId);
             if (!order.getUserId().equals(userId))
                 throw new RuntimeException("Sem permissao para ver esse pedido!");
 

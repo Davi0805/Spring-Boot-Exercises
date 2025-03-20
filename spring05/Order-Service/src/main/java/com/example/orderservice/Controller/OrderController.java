@@ -50,6 +50,7 @@ public class OrderController {
         JwtSession session;
         UUID orderId;
         Order req = new Order(order.getItems());
+        String paymentLink;
         try {
             session = redisCursor.findById(token).orElseThrow(() -> new RuntimeException("Token não encontrado"));
             if (!jwt.validateJwtToken(session.getId()))
@@ -81,12 +82,14 @@ public class OrderController {
             // Posta mensagem no kafka, porem TODO: TLVZ TRANSFORMAR EM ASYNC
             KafkaOrderMessageDTO orderMessage = new KafkaOrderMessageDTO(req.getId(), userId, session.getEmail(), totalPrice);
             kafka.sendMessage("orders", orderMessage.toString());
+
+            paymentLink = grpcClient.getPaymentLink(String.valueOf(req.getId()), produtos);
         } catch (Exception e) {
             System.out.println("ERRO:" + e.getMessage());
             return ResponseEntity.badRequest().body("ERRO:" + e.getMessage());
         }
 
-        return ResponseEntity.ok(req.getId());
+        return ResponseEntity.ok(paymentLink);
     }
 
     @GetMapping("/{id}")

@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class KafkaConsumer {
 
-    private ObjectMapper desserializer;
-    private OrderService cursor;
+    private final ObjectMapper desserializer;
+    private final OrderService cursor;
 
     @Autowired
     public KafkaConsumer(ObjectMapper objM, OrderService orderService)

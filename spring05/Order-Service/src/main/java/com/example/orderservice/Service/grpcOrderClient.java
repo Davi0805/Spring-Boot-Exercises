@@ -16,6 +16,9 @@ public class grpcOrderClient {
     @GrpcClient("product-service")
     private ProductServiceBlockingStub productServiceBlockingStub;
 
+    @GrpcClient("payment-service")
+    private ProductServiceBlockingStub paymentServiceBlockingStub;
+
     public ProductResponse checkStock(String id, int quantity) {
         ProductRequest request = ProductRequest.newBuilder()
                 .setProductId(id).setQuantity(quantity).build();
@@ -53,5 +56,22 @@ public class grpcOrderClient {
         OrderCanceledResponse response = productServiceBlockingStub.cancelOrder(request);
 
         return response.getSuccess();
+    }
+
+    public String getPaymentLink(String id, List<Product> products)
+    {
+        List<ProductRequest> productsList = new ArrayList<>();
+        for (Product temp : products)
+        {
+            productsList.add(ProductRequest.newBuilder()
+                    .setProductId(String.valueOf(temp.getId()))
+                    .setQuantity(temp.getQuantity()).build());
+        }
+        OrderRequest request = OrderRequest.newBuilder().setOrderId(id).addAllProducts(productsList).build();
+
+        OrderPaymentLink response = paymentServiceBlockingStub.getPaymentLink(request);
+        if (response.getSuccess())
+            return response.getPaymentLink();
+        throw new RuntimeException("Falha ao gerar link de pagamento!");
     }
 }

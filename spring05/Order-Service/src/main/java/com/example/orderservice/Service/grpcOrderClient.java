@@ -16,25 +16,41 @@ public class grpcOrderClient {
     @GrpcClient("product-service")
     private ProductServiceBlockingStub productServiceBlockingStub;
 
-    public ProductResponse checkStock(String id, int quantity)
-    {
+    public ProductResponse checkStock(String id, int quantity) {
         ProductRequest request = ProductRequest.newBuilder()
                 .setProductId(id).setQuantity(quantity).build();
 
         return productServiceBlockingStub.checkStock(request);
     }
 
-    public boolean updateStock(String id, List<Product> products)
-    {
+    public boolean updateStock(String id, List<Product> products) {
         List<ProductRequest> productsList = new ArrayList<>();
-        for (Product produto : products)
-        {
-            productsList.add(ProductRequest.newBuilder().setProductId(String.valueOf(produto.getId())).setQuantity(produto.getQuantity()).build());
+        for (Product produto : products) {
+            productsList.add(ProductRequest.newBuilder()
+                    .setProductId(String.valueOf(produto.getId()))
+                    .setQuantity(produto.getQuantity()).build());
         }
 
         OrderRequest request = OrderRequest.newBuilder().setOrderId(id).addAllProducts(productsList).build();
 
         OrderResponse response = productServiceBlockingStub.updateStock(request);
+
+        return response.getSuccess();
+    }
+
+    public boolean cancelOrder(String id, List<Product> products)
+    {
+        List<ProductRequest> productsList = new ArrayList<>();
+        for (Product temp : products)
+        {
+            productsList.add(ProductRequest.newBuilder()
+                    .setProductId(String.valueOf(temp.getId()))
+                    .setQuantity(temp.getQuantity()).build());
+        }
+
+        OrderRequest request = OrderRequest.newBuilder().setOrderId(id).addAllProducts(productsList).build();
+
+        OrderCanceledResponse response = productServiceBlockingStub.cancelOrder(request);
 
         return response.getSuccess();
     }

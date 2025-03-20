@@ -20,8 +20,8 @@ public class StripePaymentService {
 
         SessionCreateParams config = SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("dfsfsdfsdjfl") // adicionar webhooks para callback
-                .setCancelUrl("fgkdhfgjhdfkgjhjdfk")
+                .setSuccessUrl("https://precisadohttpsparafunfar.com") // adicionar webhooks para callback
+                .setCancelUrl("https://precisadohttpsparafunfarmesmoparacancelar.com")
                 // TODO: Substituir por addAllLineItems quando modificar kafkaOrderMessage
                 .addLineItem(
                         SessionCreateParams.LineItem.builder()

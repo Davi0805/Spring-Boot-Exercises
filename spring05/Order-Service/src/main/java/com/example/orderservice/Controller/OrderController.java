@@ -68,11 +68,11 @@ public class OrderController {
             List<Product> produtos = order.getItems();
             for (Product prodIt : produtos) {
                 ProductResponse response = grpcClient.checkStock(String.valueOf(prodIt.getId()), prodIt.getQuantity());
-                    productsList.add(ProductPaymentRequest.newBuilder()
-                            .setProductId(String.valueOf(String.valueOf(prodIt.getId())))
-                            .setQuantity(prodIt.getQuantity())
-                            .setUnitPrice(response.getPrice())
-                            .setProductName(response.getProductName()).build());
+                productsList.add(ProductPaymentRequest.newBuilder()
+                        .setProductId(String.valueOf(String.valueOf(prodIt.getId())))
+                        .setQuantity(prodIt.getQuantity())
+                        .setUnitPrice(response.getPrice())
+                        .setProductName(response.getProductName()).build());
                 if (!response.getInStock())
                     throw new RuntimeException("Produto " + prodIt.getId() + " sem estoque dessa quantidade!");
                 totalPrice += response.getPrice() * prodIt.getQuantity();
@@ -121,6 +121,28 @@ public class OrderController {
             return ResponseEntity.ok(order);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/my-orders")
+    public ResponseEntity<?> getAllMyOrders(@RequestHeader("Authorization") String token)
+    {
+        token =  extractToken(token);
+        UUID userId;
+        JwtSession session;
+
+        try {
+            session = redisCursor.findById(token).orElseThrow(() -> new RuntimeException("Falha ao se autenticar!"));
+            if (!jwt.validateJwtToken(session.getId()))
+                throw new RuntimeException("Falha ao se autenticar!");
+            userId = UUID.fromString(jwt.getUUIDFromToken(session.getId()));
+
+            List<Order> orders = cursor.getAllMyOrders(userId);
+
+            return ResponseEntity.ok(orders);
+        } catch (Exception e) {
+            System.out.println("ERRO: " + e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 

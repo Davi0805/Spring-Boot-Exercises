@@ -24,8 +24,13 @@ public class OrderService {
         cursor.save(order);
     }
 
-    public Order getOrderById(UUID id)
-    {
+    public Order getOrderById(UUID id) {
         return cursor.findById(id).orElseThrow(() -> new RuntimeException("Pedido nao encontrado!"));
+    }
+
+    public Order getOrderByIdWithItems(UUID id)
+    {
+        Order temp = cursor.findByIdWithItems(id);
+        return temp;
     }
 }

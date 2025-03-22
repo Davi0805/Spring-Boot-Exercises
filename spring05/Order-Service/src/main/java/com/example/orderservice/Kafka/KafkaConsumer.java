@@ -31,7 +31,7 @@ public class KafkaConsumer {
         System.out.println("Mensagem escutada no orderPayments: " + message);
         try {
             KafkaPaymentMessageDTO dto = desserializer.readValue(message, KafkaPaymentMessageDTO.class);
-            Order temp = cursor.getOrderById(dto.getOrderId());
+            Order temp = cursor.getOrderByIdWithItems(dto.getOrderId());
             if (dto.isSuccess())
                 temp.setStatus(OrderStatus.PROCESSING);
             else {

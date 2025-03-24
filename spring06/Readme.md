@@ -1,6 +1,4 @@
-Ótima escolha! 🚀 Podemos começar com um **sistema de análise de transações financeiras** simples e depois escalar para algo mais avançado, como detecção de fraudes.  
-
-### 🏗 **Arquitetura do Sistema de Análise de Transações**  
+# 🏗 **Arquitetura do Sistema de Análise de Transações**  
 
 📌 **Descrição**  
 Este projeto implementa um sistema de análise de transações financeiras usando **event-driven architecture**. As transações são recebidas por meio de eventos e analisadas para detectar padrões incomuns, como:  

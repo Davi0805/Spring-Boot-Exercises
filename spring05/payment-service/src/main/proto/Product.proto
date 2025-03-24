@@ -16,7 +16,8 @@ message ProductPaymentRequest {
 
 message PaymentRequest {
     string orderId = 1;
-    repeated ProductPaymentRequest products = 2;
+    string userId = 2;
+    repeated ProductPaymentRequest products = 3;
 }
 
 message OrderPaymentLink {

@@ -70,5 +70,3 @@ Este projeto implementa um sistema de análise de transações financeiras usand
 - **Infraestrutura:** Docker + Docker Compose  
 
 ---  
-
-Que acha dessa abordagem? Podemos começar com algo bem básico e ir adicionando regras mais complexas depois! 🔥

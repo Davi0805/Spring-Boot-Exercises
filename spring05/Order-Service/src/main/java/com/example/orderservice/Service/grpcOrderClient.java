@@ -58,9 +58,9 @@ public class grpcOrderClient {
         return response.getSuccess();
     }
 
-    public String getPaymentLink(String id, List<ProductPaymentRequest> products)
+    public String getPaymentLink(String id, String userId, List<ProductPaymentRequest> products)
     {
-        PaymentRequest request = PaymentRequest.newBuilder().setOrderId(id).addAllProducts(products).build();
+        PaymentRequest request = PaymentRequest.newBuilder().setOrderId(id).addAllProducts(products).setUserId(userId).build();
 
         OrderPaymentLink response = paymentServiceBlockingStub.getPaymentLink(request);
         if (response.getSuccess())

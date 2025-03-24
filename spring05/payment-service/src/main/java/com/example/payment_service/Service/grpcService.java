@@ -37,7 +37,7 @@ public class grpcService extends ProductServiceGrpc.ProductServiceImplBase {
             paymentLink = createPaymentLink(request);
 
             Payment register = new Payment(UUID.fromString(request.getOrderId()),
-                    totalPrice, PaymentMethod.CREDIT_CARD);
+                    UUID.fromString(request.getUserId()), totalPrice, PaymentMethod.CREDIT_CARD);
 
             paymentCursor.createPaymentRegister(register);
 

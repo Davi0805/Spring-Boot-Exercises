@@ -93,7 +93,7 @@ public class OrderController {
 //            KafkaOrderMessageDTO orderMessage = new KafkaOrderMessageDTO(req.getId(), userId, session.getEmail(), totalPrice);
 //            kafka.sendMessage("orders", orderMessage.toString());
 
-            paymentLink = grpcClient.getPaymentLink(String.valueOf(req.getId()), productsList);
+            paymentLink = grpcClient.getPaymentLink(String.valueOf(req.getId()), String.valueOf(userId), productsList);
         } catch (Exception e) {
             System.out.println("ERRO:" + e.getMessage());
             return ResponseEntity.badRequest().body("ERRO:" + e.getMessage());

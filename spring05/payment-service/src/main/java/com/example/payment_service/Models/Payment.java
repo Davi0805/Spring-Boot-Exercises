@@ -26,9 +26,10 @@ public class Payment {
     private PaymentMethod paymentMethod;
     private boolean success;
 
-    public Payment(UUID orderId, double totalPrice, PaymentMethod method)
+    public Payment(UUID orderId, UUID userId, double totalPrice, PaymentMethod method)
     {
         this.orderId = orderId;
+        this.userId = userId;
         this.totalPrice = totalPrice;
         this.paymentMethod = method;
     }

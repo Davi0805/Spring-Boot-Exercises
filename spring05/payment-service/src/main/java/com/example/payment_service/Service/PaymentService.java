@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -24,12 +25,17 @@ public class PaymentService {
         cursor.save(paymentDetails);
     }
 
-    public void setPaymentSuccess(UUID orderId, boolean success)
-    {
+    public void setPaymentSuccess(UUID orderId, boolean success) {
         Payment paymentDetails = cursor.findPaymentByOrderId(orderId)
                 .orElseThrow(() -> new RuntimeException("Falha ao encontrar pagamento!"));
 
         paymentDetails.setSuccess(success);
         cursor.save(paymentDetails);
+    }
+
+    public Payment getPaymentByOrderId(UUID orderId)
+    {
+        return cursor.findPaymentByOrderId(orderId)
+                .orElseThrow(() -> new RuntimeException("Pagamento nao encontrado!"));
     }
 }

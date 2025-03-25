@@ -4,9 +4,15 @@ import com.example.analysis.DTO.TransactionDTO;
 import com.example.analysis.Redis.CachedTransaction;
 import com.example.analysis.Repository.TransactionCacheRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+// Regras a ser implementado para gerar alerta
+// 1 - Checar transacao duplicada com
+// range de 1-5 min
+// 2 - Transacoes acima de 2000
 
 @Service
 public class TransactionAnalyser {
@@ -20,15 +26,15 @@ public class TransactionAnalyser {
 
     public void run(TransactionDTO transaction)
     {
-        redisCursor.save(new CachedTransaction(transaction));
-
         Optional<CachedTransaction> current = redisCursor
                 .findByUserIdAndAmount(transaction.getUser_id(), transaction.getAmount());
 
+        redisCursor.save(new CachedTransaction(transaction));
 
-        if (current.get().getAmount() > 2000 && current != null)
-            throw new RuntimeException("Transacao acima do limite");
-        else if (current != null)
-            throw new RuntimeException("Transacao duplicada");
+
+        if (current.isPresent())
+            throw new RuntimeException("1");
+        else if (transaction.getAmount() > 2000)
+            throw new RuntimeException("2");
     }
 }

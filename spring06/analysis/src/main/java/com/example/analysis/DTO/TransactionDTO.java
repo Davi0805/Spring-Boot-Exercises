@@ -1,5 +1,6 @@
 package com.example.analysis.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,6 @@ public class TransactionDTO {
     private UUID id;
     private UUID user_id;
     private double amount;
-    private Date timestamp;
+    private LocalDateTime timestamp;
     private String location;
 }

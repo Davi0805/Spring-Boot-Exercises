@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -20,7 +21,11 @@ import java.util.UUID;
 public class CachedTransaction {
     @Id
     private UUID id;
-    private UUID user_id;
+
+    @Indexed
+    private UUID userId;
+
+    @Indexed
     private double amount;
 
     // irrelevant cause is only going to be stored in redis for 3 min anyway
@@ -34,7 +39,7 @@ public class CachedTransaction {
     {
         this.id = dto.getId();
         this.amount = dto.getAmount();
-        this.user_id = dto.getUser_id();
+        this.userId = dto.getUser_id();
         //this.timestamp = dto.getTimestamp();
         this.location = dto.getLocation();
     }

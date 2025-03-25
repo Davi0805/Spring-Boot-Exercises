@@ -15,7 +15,7 @@ import org.springframework.data.redis.core.mapping.RedisMappingContext;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @Configuration
-//@EnableRedisRepositories("com.example.analysis.Repository")
+@EnableRedisRepositories("com.example.analysis.Repository")
 public class RedisConfig {
 
     @Value("${spring.redis.host}")

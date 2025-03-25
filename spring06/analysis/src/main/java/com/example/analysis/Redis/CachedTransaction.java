@@ -16,13 +16,18 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@RedisHash("Transaction")
+@RedisHash(value = "Transaction", timeToLive = 180L)
 public class CachedTransaction {
     @Id
     private UUID id;
     private UUID user_id;
     private double amount;
-    private LocalDateTime timestamp;
+
+    // irrelevant cause is only going to be stored in redis for 3 min anyway
+    // but maybe a prod env would have to be sure even in a latency situation
+    // and maybe i`ll put it back later lol
+    //private LocalDateTime timestamp;
+
     private String location;
 
     public CachedTransaction(TransactionDTO dto)
@@ -30,7 +35,7 @@ public class CachedTransaction {
         this.id = dto.getId();
         this.amount = dto.getAmount();
         this.user_id = dto.getUser_id();
-        this.timestamp = dto.getTimestamp();
+        //this.timestamp = dto.getTimestamp();
         this.location = dto.getLocation();
     }
 }
